@@ -95,6 +95,7 @@ input {
         <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script type="text/javascript">
+            var tapprString = "<span class=\"tapprMsg\">Tappr: </span>";
             var tapvar = document.getElementById("tap"); 
             function ntap() { 
                   tapvar.play(); 
@@ -201,7 +202,6 @@ function sentmsg() {
                 function ready() {
                     conn.on('data', function (data) {
                         console.log("Got Data!");
-                        var tapprString = "<span class=\"tapprMsg\">Tappr: </span>";
                         switch (data) {
                             case 'Tap':
                                 console.log("Recieved Tap!")
@@ -266,7 +266,7 @@ function sentmsg() {
                     html2canvas(document.querySelector("#message")).then(canvas => {
                         document.body.appendChild(canvas)
                     });
-                    conn.send(tapprString + "Recipient took a screenshot!");
+                    conn.send("Tappr - Recipient took a screenshot!");
                     addMessage(tapprString + "You took a screenshot!")
                 }
 

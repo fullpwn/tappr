@@ -287,7 +287,7 @@ function sentmsg() {
                     html2canvas(document.querySelector("#message")).then(canvas => {
                         document.body.appendChild(canvas)
                     });
-                    conn.send(tapprString + "Recipient took a screenshot!");
+                    conn.send("Tappr - Recipient took a screenshot!");
                     addMessage(tapprString + "You took a screenshot!")
                 }
 
