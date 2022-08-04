@@ -81,7 +81,7 @@ input {
                     <button type="button" id="sendButton">Send</button>
                     <button type="button" id="clearMsgsButton">Clear Logs</button>
                     <button type="button" id="screenshotMsgsButton">Screenshot</button>
-                    <button type="button" id="tapButton">Tap!</button>
+                    <button type="button" id="tapButton" disabled>Tap!</button>
                 </td>
             </tr>
             <tr>
@@ -205,6 +205,7 @@ function sentmsg() {
 
                     conn.on('open', function () {
                         status.innerHTML = "Connected";
+                        signal("Tappr_Check");
                         console.log("Connected to: " + conn.peer);
 
                         // Check URL params for comamnds that should be sent immediately
@@ -214,8 +215,19 @@ function sentmsg() {
                     });
                     // Handle incoming data (messages only since this is the signal sender)
                     conn.on('data', function (data) {
-                        addMessage("<span class=\"peerMsg\">Recipient:</span> " + data);
-                        newmsg();
+                        console.log("Got Data!")
+                        var tapprString = "<span class=\"tapprMsg\">Tappr: </span>";
+                        switch (data) {
+                            case 'tappr_result':
+                                console.log("Recipient is using Tappr!")
+                                recipient_is_using_tappr();
+                                break;
+                            default:
+                            console.log("Recieved Message!")
+                                addMessage("<span class=\"peerMsg\">Recipient: </span>" + data);
+                                newmsg();
+                                break;
+                        };
                     });
                     conn.on('close', function () {
                         status.innerHTML = "Connection closed";
@@ -270,6 +282,10 @@ function sentmsg() {
                     console.clear();
                 }
 
+                function recipient_is_using_tappr() {
+                    tapButton.disabled = false;
+                }
+
                 function screenshot() {
                     screenshot_title.innerHTML = "Screenshot"
                     html2canvas(document.querySelector("#message")).then(canvas => {
@@ -303,8 +319,7 @@ function sentmsg() {
                 function signal(sigName) {
                     if (conn && conn.open) {
                         conn.send(sigName);
-                        console.log("You sent a Tap!");
-                        addMessage(tapprString + "You sent a Tap!");
+
                     } else {
                         console.log('Connection is closed');
                     }
@@ -312,6 +327,8 @@ function sentmsg() {
 
                 tapButton.addEventListener('click', function () {
                     signal("Tap");
+                    console.log("You sent a Tap!");
+                    addMessage(tapprString + "You sent a Tap!");
                 });
                 // Clear messages box
                 clearMsgsButton.addEventListener('click', clearMessages);

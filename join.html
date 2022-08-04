@@ -207,10 +207,16 @@ function sentmsg() {
                         var tapprString = "<span class=\"tapprMsg\">Tappr: </span>";
                         switch (data) {
                             case 'Tap':
+                                console.log("Recieved Tap!")
                                 addMessage(tapprString + "You received a tap!");
                                 tap();
                                 break;
+                            case 'Tappr_Check':
+                                console.log("Received a check for Tappr!")
+                                tappr_check();
+                                break;
                             default:
+                            console.log("Recieved Message!")
                                 addMessage("<span class=\"peerMsg\">Recipient: </span>" + data);
                                 newmsg();
                                 break;
@@ -225,6 +231,10 @@ function sentmsg() {
 
                 function tap() {
                     ntap();
+                    return;
+                };
+                function tappr_check() {
+                    signal("tappr_result")
                     return;
                 };
 
