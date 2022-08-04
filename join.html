@@ -294,7 +294,15 @@ function sentmsg() {
                         addMessage("Note: Connection is closed");
                     }
                 });
+                
+                function signal(sigName) {
+                    if (conn && conn.open) {
+                        conn.send(sigName);
 
+                    } else {
+                        console.log('Connection is closed');
+                    }
+                }
                 // Clear messages box
                 clearMsgsButton.addEventListener('click', clearMessages);
                 screenshotMsgsButton.addEventListener('click', screenshot);
